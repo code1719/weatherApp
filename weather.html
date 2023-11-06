@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="weather-section">
+      <div class="page">
+        <h1>LATEST WEATHER</h1>
+        <div class="archive">
+          <article class="article">
+            <section id="stats">
+              <div class="summary">
+                <h2>Weather Summary</h2>
+                <h3 id="five-city"></h3>
+                <p>Currently: <span id="current-desc"></span>Partly Cloudy</p>
+                <p>Temperature: <span id="current-temp"></span>93 °F</p>
+                <p>Feels Like: <span id="current-windChill"></span>90 °F</p>
+                <p>Humidity: <span id="current-humid"></span>25%</p>
+                <p>Wind Speed <span id="current-windSpeed"></span>N 8 mph</p>
+              </div>
+            </section>
+            <div>
+              <img
+                src="images/partlyCloudy.jpg"
+                alt="Random Image"
+                width="250"
+                height="250"
+              />
+            </div>
+          </article>
+          <!--5-day-->
+          <div class="article-five-day">
+            <article id="forecastContainer">
+              <h2 id="forecastTitle">5 Day Forecast</h2>
+              <h3 id="city">Salt Lake City</h3>
+              <div class="flex">
+                <div class="flex-col">
+                  <span id="dayTitle1" class="col-head">Day 1</span>
+                  <img
+                    src="images/umbrella.jpg"
+                    id="weatherIcon1"
+                    class="weatherIcon"
+                    width="75"
+                    height="75"
+                  />
+                  <span class="temp-data">
+                    <span id="data1">105</span>
+                    <span>°F</span>
+                  </span>
+                </div>
+                <div class="flex-col">
+                  <span id="dayTitle2" class="col-head">Day 2</span>
+                  <img
+                    src="images/Sunny.jpg"
+                    id="weatherIcon2"
+                    class="weatherIcon"
+                    width="75"
+                    height="75"
+                  />
+                  <div class="temp-data">
+                    <span id="data2">103</span>
+                    <span>°F</span>
+                  </div>
+                </div>
+                <div class="flex-col">
+                  <span id="dayTitle3" class="col-head">Day 3</span>
+                  <img
+                    src="images/partlyCloudy.jpg"
+                    id="weatherIcon3"
+                    class="weatherIcon"
+                    width="75"
+                    height="75"
+                  />
+                  <div class="temp-data">
+                    <span id="data3">102</span>
+                    <span>°F</span>
+                  </div>
+                  <div class="flex-col">
+                    <span id="dayTitle4" class="col-head">Day 4</span>
+                    <img
+                      src="images/thunderStorms.jpg"
+                      id="weatherIcon4"
+                      class="weatherIcon"
+                      width="75"
+                      height="75"
+                    />
+                    <div class="temp-data">
+                      <span id="data4">95</span>
+                      <span>°F</span>
+                    </div>
+                  </div>
+                  <div class="flex-col">
+                    <span id="dayTitle5" class="col-head">Day 5</span>
+                    <img
+                      src="images/partlyCloudy.jpg"
+                      id="weatherIcon4"
+                      class="weatherIcon"
+                      width="75"
+                      height="75"
+                    />
+                    <div class="temp-data">
+                      <span id="data5">102</span>
+                      <span>°F</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
