@@ -1,157 +1,160 @@
-
 body {
-    background: rgb(197, 190, 190);
-    color: #111;
-    padding: 4em;
-    font-family: sans-serif;
-    line-height: 1.15;
+  background: rgb(197, 190, 190);
+  color: #111;
+  padding: 4em;
+  font-family: sans-serif;
+  line-height: 1.15;
 }
 
 a {
-    color: #111;
+  color: #111;
 }
 
 ul {
-    max-width: 100%;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #cecece;
+  max-width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #cecece;
 }
 
 li {
-    float: left;
+  float: left;
 }
 
 li a {
-    display: block;
-    color: #333;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+  display: block;
+  color: #333;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 li a:hover:not(.active) {
-    background-color: #111;
+  background-color: #111;
 }
 
 .active {
-    background-color: #048caa;
+  background-color: #048caa;
 }
 
 /* News Section */
 
 hr {
-    height: 6px;
-    border: none;
+  height: 6px;
+  border: none;
 }
 
 .page {
-    padding: 2em;
-    background: #cecece;
-    max-width: 100%;
+  padding: 2em;
+  background: #cecece;
+  max-width: 100%;
 }
 
 .archive {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    grid-gap: 1em;
-    grid-auto-flow: dense;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-gap: 1em;
+  grid-auto-flow: dense;
 }
 
 .article {
-    text-align: center;
-    padding: 1em;
-    background: rgba(200, 200, 255, 0.3);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1), 0 20px rgba(0,0,0,0.05);
+  text-align: center;
+  padding: 1em;
+  background: rgba(200, 200, 255, 0.3);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), 0 20px rgba(0, 0, 0, 0.05);
 }
 
 .argicle img {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .five-day {
-    text-align: center;
-    padding: 1em;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1) 0 20px 20px rgba(0,0,0,0.05);
-    grid-column: 1/5;
-    background: rgba(200,200,255,0.3);
+  text-align: center;
+  padding: 1em;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1) 0 20px 20px rgba(0, 0, 0, 0.05);
+  grid-column: 1/5;
+  background: rgba(200, 200, 255, 0.3);
 }
 
 .day {
-    color: #111;
-    max-width: 100px;
-    height: 125px;
-    background-color: #048caa;
+  color: #111;
+  max-width: 100px;
+  height: 125px;
+  background-color: #048caa;
 }
 
 .article:nth-child(1) {
-    grid-column: 1/-1 ;
-    background: rgba(200,200,255,0.3);
+  grid-column: 1/-1;
+  background: rgba(200, 200, 255, 0.3);
 }
 
 .article:nth-child(8) {
-    grid-column: -3 / -1;
-    background: rgba(255, 200, 255,0.3,);
+  grid-column: -3 / -1;
+  background: rgba(255, 200, 255, 0.3);
 }
 .article:nth-child(8):after {
-    content: "grid-column: -3 / -1";
+  content: "grid-column: -3 / -1";
 }
 
-@media (max-wdth:680px) {
-    .archive { display: flex;
-    flex-direction: column;}
-    .article {margin-bottom: 1em;}
+@media (max-wdth: 680px) {
+  .archive {
+    display: flex;
+    flex-direction: column;
+  }
+  .article {
+    margin-bottom: 1em;
+  }
 }
 
 /* Weather Section */
 
 .article-five-day {
-    grid-column: 1/-1;
-    padding: 15px;
-    margin-top: 15px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.05);
-    background-color: rgba(200,200,255,0.3);
+  grid-column: 1/-1;
+  padding: 15px;
+  margin-top: 15px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), 0 20px 20px rgba(0, 0, 0, 0.05);
+  background-color: rgba(200, 200, 255, 0.3);
 }
 
 .five-article {
-    text-align: center;
+  text-align: center;
 }
 
 #city {
-    text-align: center;
+  text-align: center;
 }
 
 #forecastTitle {
-    text-align: center;
+  text-align: center;
 }
 
 .flex {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .flex-col {
-    text-align: center;
-    margin-right: 50px;
+  text-align: center;
+  margin-right: 50px;
 }
 
 #stats {
-    text-align: start;
-    float: left;
+  text-align: start;
+  float: left;
 }
 
 .temp-data {
-    margin-left: 10px;
-    display: flex;
+  margin-left: 10px;
+  display: flex;
 }
 
 .weatherIcon {
-    display: flex;
-    margin-left: 0px;
+  display: flex;
+  margin-left: 0px;
 }
 
 footer {
-    text-align: center;
+  text-align: center;
 }
