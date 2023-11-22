@@ -10,10 +10,10 @@ fetch(currentUrl)
     let currentDesc = data.weather[0].description; // Get weather description
     document.getElementById("current-desc").innerHTML = currentDesc; // Set inner HTML
 
-    let currentTemp = data.main.temp;
+    let currentTemp = Math.round(data.main.temp);
     document.getElementById("current-temp").innerHTML = currentTemp;
 
-    let currentWindChill = data.main.feels_like;
+    let currentWindChill = Math.round(data.main.feels_like);
     document.getElementById("current-windChill").innerHTML = currentWindChill;
 
     let currentHumid = data.main.humidity;
@@ -46,148 +46,44 @@ fetch(forecastUrl)
   .then((data) => {
     console.log(data);
 
+    // Get today's date
     let today = new Date();
-    let currentDay = today.getDay();
 
+    // Loop through the next 5 days
     for (let i = 0; i < 5; i++) {
-      let forecastIndex = (currentDay + i) % 7;
-      let dayIndex = forecastIndex === 0 ? 7 : forecastIndex;
+      // Calculate the forecast date by adding i * 8 hours to the current date
+      let forecastDate = new Date(today);
+      forecastDate.setDate(today.getDate() + i);
+      forecastDate.setHours(12); // Assuming the API provides data around noon
 
-      let temperature = Math.round(data.list[i * 8].main.temp); // Adjusting the interval to get different days
-      let dayOfWeek = new Date(data.list[i * 8].dt_txt).toLocaleDateString(
-        "en-US",
-        { weekday: "long" }
-      );
+      let weatherDescription = data.list[i * 8].weather[0].description;
 
-      let dayOneData = Math.round(data.list[1].main.temp);
-      let dayTwoData = Math.round(data.list[2].main.temp);
-      let dayThreeData = Math.round(data.list[3].main.temp);
-      let dayFourData = Math.round(data.list[4].main.temp);
-      let dayFiveData = Math.round(data.list[5].main.temp);
+      // Extract the forecasted temperature for the day
+      let temperature = Math.round(data.list[i * 8].main.temp);
 
+      // Get the day of the week for the forecasted date
+      let dayOfWeek = forecastDate.toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+
+      // Display the temperature and day of the week
       document.getElementById(`data${i + 1}`).innerHTML = temperature;
       document.getElementById(`dayTitle${i + 1}`).innerHTML = dayOfWeek;
 
-      document.getElementById("data1").innerHTML = dayOneData;
-      document.getElementById("data2").innerHTML = dayTwoData;
-      document.getElementById("data3").innerHTML = dayThreeData;
-      document.getElementById("data4").innerHTML = dayFourData;
-      document.getElementById("data5").innerHTML = dayFiveData;
+      let imageElement = document.getElementById(`weatherIcon${i + 1}`);
+      console.log(weatherDescription);
+      if (weatherDescription.includes("rain")) {
+        imageElement.src = "./images/Umbrella.jpg";
+      } else if (weatherDescription.includes("clouds")) {
+        imageElement.src = "./images/partlyCloudy.jpg";
+      } else if (weatherDescription.includes("snow")) {
+        imageElement.src = "./images/snow.png";
+      } else if (weatherDescription.includes("clear")) {
+        imageElement.src = "./images/Sunny.jpg";
+      } else if (weatherDescription.includes("thunder")) {
+        imageElement.src = "./images/thunderStorms.jpg";
+      } else {
+        imageElement.src = "./images/sadFace.png";
+      }
     }
   });
-
-//
-//   script.js:8
-//   {coord: {…}, weather: Array(1), base: 'stations', main: {…}, visibility: 10000, …}
-//   base
-//   :
-//   "stations"
-//   clouds
-//   :
-//   all
-//   :
-//   0
-//   [[Prototype]]
-//   :
-//   Object
-//   cod
-//   :
-//   200
-//   coord
-//   :
-//   lat
-//   :
-//   40.5308
-//   lon
-//   :
-//   -112.2983
-//   [[Prototype]]
-//   :
-//   Object
-//   dt
-//   :
-//   1700673732
-//   id
-//   :
-//   5783695
-//   main
-//   :
-//   feels_like
-//   :
-//   35.91
-//   humidity
-//   :
-//   68
-//   pressure
-//   :
-//   1029
-//   temp
-//   :
-//   38.79
-//   temp_max
-//   :
-//   42.98
-//   temp_min
-//   :
-//   36.16
-//   [[Prototype]]
-//   :
-//   Object
-//   name
-//   :
-//   "Tooele"
-//   sys
-//   :
-//   country
-//   :
-//   "US"
-//   id
-//   :
-//   2080099
-//   sunrise
-//   :
-//   1700663018
-//   sunset
-//   :
-//   1700698038
-//   type
-//   :
-//   2
-//   [[Prototype]]
-//   :
-//   Object
-//   timezone
-//   :
-//   -25200
-//   visibility
-//   :
-//   10000
-//   weather
-//   :
-//   Array(1)
-//   0
-//   :
-//   {id: 800, main: 'Clear', description: 'clear sky', icon: '01d'}
-//   length
-//   :
-//   1
-//   [[Prototype]]
-//   :
-//   Array(0)
-//   wind
-//   :
-//   deg
-//   :
-//   321
-//   gust
-//   :
-//   4
-//   speed
-//   :
-//   4
-//   [[Prototype]]
-//   :
-//   Object
-//   [[Prototype]]
-//   :
-//   Object
