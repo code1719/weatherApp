@@ -1,32 +1,37 @@
-const apiKey = "4c0bb32bad9bb74e7299bd0640357ebc";
-const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=tooele&units=imperial&appid=${apiKey}`;
-const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=tooele&units=imperial&appid=${apiKey}`;
+const weatherApiKey = "4c0bb32bad9bb74e7299bd0640357ebc";
+const newsApiKey = "f902d94fec2b4c34985718e7feaab270";
+const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=tooele&units=imperial&appid=${weatherApiKey}`;
+const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=tooele&units=imperial&appid=${weatherApiKey}`;
+const newsUrl = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=${newsApiKey}`;
 
+// Fetch current weather data
 fetch(currentUrl)
   .then((response) => response.json())
   .then((data) => {
-    console.log(data);
-
-    let currentDesc = data.weather[0].description; // Get weather description
-    document.getElementById("current-desc").innerHTML = currentDesc; // Set inner HTML
-
-    let currentTemp = Math.round(data.main.temp);
-    document.getElementById("current-temp").innerHTML = currentTemp;
-
-    let currentWindChill = Math.round(data.main.feels_like);
-    document.getElementById("current-windChill").innerHTML = currentWindChill;
-
-    let currentHumid = data.main.humidity;
-    document.getElementById("current-humid").innerHTML = currentHumid;
-
-    let currentDirection = data.wind.deg;
-    document.getElementById("current-direction").innerHTML =
-      getCardinalDirection(currentDirection);
-
-    let currentWindSpeed = Math.round(data.wind.speed);
-    document.getElementById("current-windSpeed").innerHTML = currentWindSpeed;
+    displayCurrentWeather(data);
   });
 
+// Function to display current weather data
+function displayCurrentWeather(data) {
+  console.log(data);
+
+  const {
+    weather,
+    main: { temp, feels_like, humidity },
+    wind: { deg, speed },
+  } = data;
+
+  document.getElementById("current-desc").innerHTML = weather[0].description;
+  document.getElementById("current-temp").innerHTML = Math.round(temp);
+  document.getElementById("current-windChill").innerHTML =
+    Math.round(feels_like);
+  document.getElementById("current-humid").innerHTML = humidity;
+  document.getElementById("current-direction").innerHTML =
+    getCardinalDirection(deg);
+  document.getElementById("current-windSpeed").innerHTML = Math.round(speed);
+}
+
+// Function to get cardinal direction
 function getCardinalDirection(angle) {
   const directions = [
     "↑ N",
@@ -41,49 +46,100 @@ function getCardinalDirection(angle) {
   return directions[Math.round(angle / 45) % 8];
 }
 
+// Fetch weather forecast data
 fetch(forecastUrl)
   .then((response) => response.json())
   .then((data) => {
+    displayWeatherForecast(data);
+  });
+
+// Function to display weather forecast
+function displayWeatherForecast(data) {
+  console.log(data);
+
+  const today = new Date();
+
+  for (let i = 0; i < 5; i++) {
+    const forecastDate = new Date(today);
+    forecastDate.setDate(today.getDate() + i);
+    forecastDate.setHours(12);
+
+    const { weather, main } = data.list[i * 8];
+    const weatherDescription = weather[0].description;
+    const temperature = Math.round(main.temp);
+    const dayOfWeek = forecastDate.toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+
+    document.getElementById(`data${i + 1}`).innerHTML = temperature;
+    document.getElementById(`dayTitle${i + 1}`).innerHTML = dayOfWeek;
+
+    const imageElement = document.getElementById(`weatherIcon${i + 1}`);
+    setImageBasedOnWeather(imageElement, weatherDescription);
+  }
+}
+
+// Function to set image based on weather description
+function setImageBasedOnWeather(imageElement, weatherDescription) {
+  if (weatherDescription.includes("rain")) {
+    imageElement.src = "./images/Umbrella.jpg";
+  } else if (weatherDescription.includes("clouds")) {
+    imageElement.src = "./images/partlyCloudy.jpg";
+  } else if (weatherDescription.includes("snow")) {
+    imageElement.src = "./images/snow.png";
+  } else if (weatherDescription.includes("clear")) {
+    imageElement.src = "./images/Sunny.jpg";
+  } else if (weatherDescription.includes("thunder")) {
+    imageElement.src = "./images/thunderStorms.jpg";
+  } else {
+    imageElement.src = "./images/sadFace.png";
+  }
+}
+
+// Fetch news data
+fetch(newsUrl)
+  .then((response) => response.json())
+  .then((data) => {
+    displayNews(data.articles);
     console.log(data);
+  })
+  .catch((error) => {
+    console.error("Error fetching news data:", error);
+  });
 
-    // Get today's date
-    let today = new Date();
+// Function to display news articles
+function displayNews(articles) {
+  const cards = document.querySelector("div.newsCards");
 
-    // Loop through the next 5 days
-    for (let i = 0; i < 5; i++) {
-      // Calculate the forecast date by adding i * 8 hours to the current date
-      let forecastDate = new Date(today);
-      forecastDate.setDate(today.getDate() + i);
-      forecastDate.setHours(12); // Assuming the API provides data around noon
+  articles.forEach((article) => {
+    if (
+      article.title &&
+      article.urlToImage &&
+      article.description &&
+      article.title.trim() !== "" &&
+      article.description.trim() !== ""
+    ) {
+      const card = document.createElement("section");
+      card.className = "newsCard";
 
-      let weatherDescription = data.list[i * 8].weather[0].description;
+      const h2 = document.createElement("h2");
+      h2.textContent = article.title;
+      card.appendChild(h2);
 
-      // Extract the forecasted temperature for the day
-      let temperature = Math.round(data.list[i * 8].main.temp);
+      const imageContainer = document.createElement("div"); // Creating the container
+      imageContainer.className = "image-container"; // Applying the class
 
-      // Get the day of the week for the forecasted date
-      let dayOfWeek = forecastDate.toLocaleDateString("en-US", {
-        weekday: "long",
-      });
+      const img = document.createElement("img");
+      img.setAttribute("src", article.urlToImage);
 
-      // Display the temperature and day of the week
-      document.getElementById(`data${i + 1}`).innerHTML = temperature;
-      document.getElementById(`dayTitle${i + 1}`).innerHTML = dayOfWeek;
+      imageContainer.appendChild(img); // Placing the image inside the container
+      card.appendChild(imageContainer); // Adding the container to the card
 
-      let imageElement = document.getElementById(`weatherIcon${i + 1}`);
-      console.log(weatherDescription);
-      if (weatherDescription.includes("rain")) {
-        imageElement.src = "./images/Umbrella.jpg";
-      } else if (weatherDescription.includes("clouds")) {
-        imageElement.src = "./images/partlyCloudy.jpg";
-      } else if (weatherDescription.includes("snow")) {
-        imageElement.src = "./images/snow.png";
-      } else if (weatherDescription.includes("clear")) {
-        imageElement.src = "./images/Sunny.jpg";
-      } else if (weatherDescription.includes("thunder")) {
-        imageElement.src = "./images/thunderStorms.jpg";
-      } else {
-        imageElement.src = "./images/sadFace.png";
-      }
+      const description = document.createElement("p");
+      description.textContent = article.description;
+      card.appendChild(description);
+
+      cards.appendChild(card);
     }
   });
+}

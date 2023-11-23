@@ -66,7 +66,7 @@ hr {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), 0 20px rgba(0, 0, 0, 0.05);
 }
 
-.argicle img {
+.article img {
   max-width: 100%;
 }
 
@@ -98,7 +98,7 @@ hr {
   content: "grid-column: -3 / -1";
 }
 
-@media (max-wdth: 680px) {
+@media (max-width: 680px) {
   .archive {
     display: flex;
     flex-direction: column;
@@ -157,4 +157,62 @@ hr {
 
 footer {
   text-align: center;
+}
+
+/* News Section*/
+
+h2 {
+  padding: 5px;
+}
+
+p {
+  padding: 5px;
+}
+
+div.newsCards {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  perspective: 1000px;
+  border: 2px solid black;
+}
+
+section.newsCard {
+  width: 75%;
+  height: auto;
+  margin: 10px;
+  position: relative;
+  transform: scale(1);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+  border: solid 1px;
+  border-radius: 5px;
+}
+
+section.newsCard img {
+  display: flex;
+  flex-direction: column;
+  max-width: 98%;
+  padding: 5px;
+  width: 500px;
+  height: auto;
+  align-items: center;
+}
+
+/* Updated CSS */
+section.newsCard .image-container {
+  display: flex;
+  justify-content: center; /* Horizontally centers items */
+  align-items: center; /* Vertically centers items */
+  margin-bottom: 10px; /* Adjust spacing as needed */
+}
+
+section.newsCard .image-container img {
+  max-width: 100%; /* Adjust sizing as needed */
+  height: auto;
 }
