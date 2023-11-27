@@ -4,12 +4,41 @@ const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=tooele&uni
 const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=tooele&units=imperial&appid=${weatherApiKey}`;
 const newsUrl = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=${newsApiKey}`;
 
-// Fetch current weather data
-fetch(currentUrl)
-  .then((response) => response.json())
-  .then((data) => {
-    displayCurrentWeather(data);
-  });
+function init() {
+  const title = document.getElementById("title").innerText.trim();
+
+  if (title === "Current Weather") {
+    fetchWeatherData();
+  } else if (title === "Current News") {
+    fetchNewsData();
+  }
+}
+
+function fetchWeatherData() {
+  fetch(currentUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      displayCurrentWeather(data);
+    });
+
+  fetch(forecastUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      displayWeatherForecast(data);
+    });
+}
+
+function fetchNewsData() {
+  fetch(newsUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      displayNews(data.articles);
+    })
+    .catch((error) => {
+      console.error("Error fetching news data:", error);
+    });
+}
 
 // Function to display current weather data
 function displayCurrentWeather(data) {
@@ -30,28 +59,6 @@ function displayCurrentWeather(data) {
     getCardinalDirection(deg);
   document.getElementById("current-windSpeed").innerHTML = Math.round(speed);
 }
-
-// Function to get cardinal direction
-function getCardinalDirection(angle) {
-  const directions = [
-    "↑ N",
-    "↗ NE",
-    "→ E",
-    "↘ SE",
-    "↓ S",
-    "↙ SW",
-    "← W",
-    "↖ NW",
-  ];
-  return directions[Math.round(angle / 45) % 8];
-}
-
-// Fetch weather forecast data
-fetch(forecastUrl)
-  .then((response) => response.json())
-  .then((data) => {
-    displayWeatherForecast(data);
-  });
 
 // Function to display weather forecast
 function displayWeatherForecast(data) {
@@ -79,7 +86,53 @@ function displayWeatherForecast(data) {
   }
 }
 
-// Function to set image based on weather description
+// Function to display news articles
+function displayNews(articles) {
+  const cards = document.querySelector("div.newsCards");
+
+  if (!cards) {
+    console.error("News section not found");
+    return;
+  }
+
+  articles.forEach((article) => {
+    if (
+      article.title &&
+      article.urlToImage &&
+      article.description &&
+      article.title.trim() !== "" &&
+      article.description.trim() !== ""
+    ) {
+      const card = createNewsCard(article);
+      cards.appendChild(card);
+    }
+  });
+}
+
+function createNewsCard(article) {
+  const card = document.createElement("section");
+  card.className = "newsCard";
+
+  const h2 = document.createElement("h2");
+  h2.textContent = article.title;
+  card.appendChild(h2);
+
+  const imageContainer = document.createElement("div");
+  imageContainer.className = "image-container";
+
+  const img = document.createElement("img");
+  img.setAttribute("src", article.urlToImage);
+
+  imageContainer.appendChild(img);
+  card.appendChild(imageContainer);
+
+  const description = document.createElement("p");
+  description.textContent = article.description;
+  card.appendChild(description);
+
+  return card;
+}
+
 function setImageBasedOnWeather(imageElement, weatherDescription) {
   if (weatherDescription.includes("rain")) {
     imageElement.src = "./images/Umbrella.jpg";
@@ -96,50 +149,20 @@ function setImageBasedOnWeather(imageElement, weatherDescription) {
   }
 }
 
-// Fetch news data
-fetch(newsUrl)
-  .then((response) => response.json())
-  .then((data) => {
-    displayNews(data.articles);
-    console.log(data);
-  })
-  .catch((error) => {
-    console.error("Error fetching news data:", error);
-  });
-
-// Function to display news articles
-function displayNews(articles) {
-  const cards = document.querySelector("div.newsCards");
-
-  articles.forEach((article) => {
-    if (
-      article.title &&
-      article.urlToImage &&
-      article.description &&
-      article.title.trim() !== "" &&
-      article.description.trim() !== ""
-    ) {
-      const card = document.createElement("section");
-      card.className = "newsCard";
-
-      const h2 = document.createElement("h2");
-      h2.textContent = article.title;
-      card.appendChild(h2);
-
-      const imageContainer = document.createElement("div"); // Creating the container
-      imageContainer.className = "image-container"; // Applying the class
-
-      const img = document.createElement("img");
-      img.setAttribute("src", article.urlToImage);
-
-      imageContainer.appendChild(img); // Placing the image inside the container
-      card.appendChild(imageContainer); // Adding the container to the card
-
-      const description = document.createElement("p");
-      description.textContent = article.description;
-      card.appendChild(description);
-
-      cards.appendChild(card);
-    }
-  });
+function getCardinalDirection(angle) {
+  const directions = [
+    "↑ N",
+    "↗ NE",
+    "→ E",
+    "↘ SE",
+    "↓ S",
+    "↙ SW",
+    "← W",
+    "↖ NW",
+  ];
+  return directions[Math.round(angle / 45) % 8];
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  init();
+});
